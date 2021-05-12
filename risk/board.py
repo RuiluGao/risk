@@ -258,35 +258,35 @@ class Board(object):
         if source == target:
             return None
 
-        dic = {}
+        dic = dict()
         dic[source] = [source]
         heapdic = heapdict.heapdict()
         heapdic[source] = 0
         visited = set()
         visited.add(source)
-        attack_id = self.owner(source)
+        attacker_id = self.owner(source)
 
-        while heapdic is not None:
-            current_ter, pri = heapdic.popitem()
+        while len(heapdic) > 0:
+            current_ter, priority = heapdic.popitem()
             if current_ter == target:
                 return dic[current_ter]
             neighbors = self.neighbors(current_ter)
             real_neighbors = []
             for ter in neighbors:
-                if not self.owner(ter[0]) == attack_id:
+                if not self.owner(ter[0]) == attacker_id:
                     real_neighbors.append(ter)
             for terr in real_neighbors:
                 terr_id = terr[0]
                 if terr_id not in visited:
                     new_ter = copy.copy(dic[current_ter])
                     new_ter.append(terr_id)
-                    pri = pri + self.armies(terr_id)
+                    new_priority = priority + self.armies(terr_id)
                     if terr_id not in heapdic:
                         dic[terr_id] = new_ter
-                        heapdic[terr_id] = pri
-                    elif pri < heapdic[terr_id]:
+                        heapdic[terr_id] = new_priority
+                    elif new_priority < heapdic[terr_id]:
                         dic[terr_id] = new_ter
-                        heapdic[terr_id] = pri
+                        heapdic[terr_id] = new_priority
             visited.add(current_ter)
         
 
