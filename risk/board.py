@@ -143,13 +143,17 @@ class Board(object):
         Returns:
             bool: True if the path is an attack path
         '''
-        if not self.is_valid_path(path) or len(path) < 2:
-            return False
-        attacker = self.owner(path[0])
-        for ter in path[1:]:
-            if self.owner(ter) == attacker:
+        if self.is_valid_path(path) and path is not None:
+            if len(path) < 2:
                 return False
-        return True
+            else:
+                attacker = self.owner(path[0])
+                for ter in path[1:]:
+                    if self.owner(ter) == attacker:
+                        return False
+                    return True
+        else:
+            return False
 
 
     def cost_of_attack_path(self, path):
