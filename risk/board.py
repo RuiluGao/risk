@@ -153,6 +153,8 @@ class Board(object):
                         return False
         else:
             return False
+        
+        return True
 
 
     def cost_of_attack_path(self, path):
