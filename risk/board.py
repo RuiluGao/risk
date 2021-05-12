@@ -230,7 +230,7 @@ class Board(object):
             current_ter = q.popleft()
             if current_ter == target:
                 return True
-            fneighbors = risk.definitions.friendly_neighbors[current_ter]
+            fneighbors = self.friendly_neighbors[current_ter]
             for ter in fneighbors:
                 if ter not in visited:
                     new_ter = copy.copy(dic[current_ter])
