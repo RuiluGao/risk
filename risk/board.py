@@ -145,7 +145,7 @@ class Board(object):
             return False
         attacker = self.owner(path[0])
         for ter in path[1:]:
-            if self.owner[ter] = attacker:
+            if self.owner[ter] == attacker:
                 return False
         return True
 
@@ -185,6 +185,24 @@ class Board(object):
         Returns:
             [int]: a valid path between source and target that has minimum length; this path is guaranteed to exist
         '''
+        dic = {}
+        dic[source] = [source]
+        q = deque()
+        q.append(source)
+        visited = set()
+        visited.add(source)
+        while q:
+            current_ter = q.popleft()
+            if current_ter == target:
+                return dic[current_ter]
+            neighbors = risk.definitions.territory_neighbors[current_ter]
+            for ter in neighbors:
+                if ter not in visited:
+                    new_ter = copy.copy(dic[current_ter])
+                    new_ter.append(ter)
+                    dic[ter] = new_ter
+                    q.append(ter)
+                visited.add(ter)
 
 
     def can_fortify(self, source, target):
@@ -200,6 +218,25 @@ class Board(object):
         Returns:
             bool: True if reinforcing the target from the source territory is a valid move
         '''
+        dic = {}
+        dic[source] = [source]
+        q = deque()
+        q.append(source)
+        visited = set()
+        visited.add(source)
+        while q:
+            current_ter = q.popleft()
+            if current_ter == target:
+                return True
+            fneighbors = risk.definitions.friendly_neighbors[current_ter]
+            for ter in fneighbors:
+                if ter not in visited:
+                    new_ter = copy.copy(dic[current_ter])
+                    new_ter.append(ter)
+                    dic[ter] = new_ter
+                    q.append(ter)
+                visited.add(ter)
+        return False
 
 
     def cheapest_attack_path(self, source, target):
