@@ -111,6 +111,17 @@ class Board(object):
         Returns:
             bool: True if the input path is valid
         '''
+        visited = []
+        if (path == []) or (len(path) == 1):
+            return True
+        for index in range(len(path) - 1):
+            neighbors = path[index + 1] in risk.definitions.territory_neighbors[path[index]]
+            visited.append(path[index])
+            if path[index+1] not in neighbors:
+                return False
+            if path[index+1] in visited:
+                return False 
+        return True
 
     
     def is_valid_attack_path(self, path):
@@ -130,6 +141,13 @@ class Board(object):
         Returns:
             bool: True if the path is an attack path
         '''
+        if not self.is_valid_path(path) or len(path) < 2:
+            return False
+        attacker = self.owner(path[0])
+        for ter in path[1:]:
+            if self.owner[ter] = attacker:
+                return False
+        return True
 
 
     def cost_of_attack_path(self, path):
@@ -143,6 +161,12 @@ class Board(object):
         Returns:
             bool: the number of enemy armies in the path
         '''
+        total = 0
+        if path is None:
+            return total
+        for ter in path:
+            total += self.armies(ter)
+        return total
 
 
     def shortest_path(self, source, target):
