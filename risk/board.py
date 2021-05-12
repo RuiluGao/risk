@@ -117,7 +117,7 @@ class Board(object):
         if path is None or (len(path) == 1):
             return True
         for index in range(len(path) - 1):
-            neighbors = path[index + 1] in risk.definitions.territory_neighbors[path[index]]
+            neighbors = risk.definitions.territory_neighbors[path[index]]
             visited.append(path[index])
             if path[index+1] not in neighbors:
                 return False
