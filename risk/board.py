@@ -1,6 +1,8 @@
 import os
 import random
-from collections import namedtuple
+import copy
+import heapdict
+from collections import namedtuple, deque
 
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
@@ -112,7 +114,7 @@ class Board(object):
             bool: True if the input path is valid
         '''
         visited = []
-        if (path == []) or (len(path) == 1):
+        if path is None or (len(path) == 1):
             return True
         for index in range(len(path) - 1):
             neighbors = path[index + 1] in risk.definitions.territory_neighbors[path[index]]
@@ -252,7 +254,39 @@ class Board(object):
         Returns:
             [int]: a list of territory_ids representing the valid attack path; if no path exists, then it returns None instead
         '''
+        if source == target:
+            return None
 
+        dic = {}
+        dic[source] = [source]
+        heapdic = heapdict.heapdict()
+        heapdic[source] = 0
+        visited = set()
+        visited = add(source)
+
+        while heapdic is not None:
+            current_ter, pri = heapdic.popitem()
+            if current_ter == target:
+                return dic[current_ter]
+            neighbors = self.neighbors(current_ter)
+            real_neighbors = []
+            for ter in neighbors:
+                if self.owner(ter[0]) != self.owner(source):
+                    neighbors.append(ter)
+            for terr in real_neighbors:
+                terr_id = terr[0]
+                if terr_id not in visited:
+                    new_ter = copy.copy(dic[current_ter])
+                    new_ter.append(terr_id)
+                    priority = pri + self.armies(terr_id)
+                    if terr_id not in heapdic:
+                        dic[terr_id] = new_ter
+                        heapdic[terr_id] = pri
+                    elif priority < heapdic[terr_id]:
+                        dic[terr_id] = new_ter
+                        heapdic[terr_id] = pri
+            visited.add(current_ter)
+        
 
     def can_attack(self, source, target):
         '''
@@ -263,6 +297,11 @@ class Board(object):
         Returns:
             bool: True if a valid attack path exists between source and target; else False
         '''
+        attack_path = self.cheapest_attack_path(source, target)
+        if self.is_valid_attack_path(attack_path):
+            return True
+        else:
+            return False
 
 
     # ======================= #
