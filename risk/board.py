@@ -147,7 +147,7 @@ class Board(object):
             return False
         attacker = self.owner(path[0])
         for ter in path[1:]:
-            if self.owner[ter] == attacker:
+            if self.owner(ter) == attacker:
                 return False
         return True
 
@@ -166,7 +166,7 @@ class Board(object):
         total = 0
         if path is None:
             return total
-        for ter in path:
+        for ter in path[1:]:
             total += self.armies(ter)
         return total
 
