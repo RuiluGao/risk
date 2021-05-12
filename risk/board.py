@@ -143,17 +143,12 @@ class Board(object):
         Returns:
             bool: True if the path is an attack path
         '''
-        if self.is_valid_path(path) and path is not None:
-            if len(path) < 2:
-                return False
-            else:
-                attacker = self.owner(path[0])
-                for ter in path[1:]:
-                    if self.owner(ter) == attacker:
-                        return False
-        else:
+        if not self.is_valid_path(path) or len(path) < 2:
             return False
-        
+        owner = self.owner(path[0])
+        for ter in path[1:]:
+            if self.owner(ter) == owner:
+                return False
         return True
 
 
