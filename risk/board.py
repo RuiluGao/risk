@@ -232,12 +232,13 @@ class Board(object):
                 return True
             fneighbors = self.friendly_neighbors(current_ter)
             for ter in fneighbors:
-                if ter[0] not in visited:
+                ter_id = ter[0]
+                if ter_id not in visited:
                     new_ter = copy.copy(dic[current_ter])
-                    new_ter.append(ter)
-                    dic[ter] = new_ter
-                    q.append(ter)
-                visited.add(ter)
+                    new_ter.append(ter_id)
+                    dic[ter_id] = new_ter
+                    q.append(ter_id)
+                visited.add(ter_id)
         return False
 
 
@@ -262,7 +263,7 @@ class Board(object):
         heapdic = heapdict.heapdict()
         heapdic[source] = 0
         visited = set()
-        visited = add(source)
+        visited.add(source)
 
         while heapdic is not None:
             current_ter, pri = heapdic.popitem()
