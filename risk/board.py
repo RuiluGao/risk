@@ -273,7 +273,7 @@ class Board(object):
             real_neighbors = []
             for ter in neighbors:
                 if self.owner(ter[0]) != self.owner(source):
-                    neighbors.append(ter)
+                    real_neighbors.append(ter)
             for terr in real_neighbors:
                 terr_id = terr[0]
                 if terr_id not in visited:
