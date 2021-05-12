@@ -232,7 +232,7 @@ class Board(object):
                 return True
             fneighbors = self.friendly_neighbors(current_ter)
             for ter in fneighbors:
-                if ter not in visited:
+                if ter[0] not in visited:
                     new_ter = copy.copy(dic[current_ter])
                     new_ter.append(ter)
                     dic[ter] = new_ter
