@@ -151,7 +151,6 @@ class Board(object):
                 for ter in path[1:]:
                     if self.owner(ter) == attacker:
                         return False
-                    return True
         else:
             return False
 
